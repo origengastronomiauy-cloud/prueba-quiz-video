@@ -2,14 +2,13 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Experiencia ORIGEN</title>
     <style>
       /* --- ESTÉTICA PREMIUM & GLASSMORPHISM --- */
       body { 
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
         background: #060608;
-        /* Fondo con un sutil gradiente radial para darle profundidad */
         background: radial-gradient(circle at 50% 0%, #1a1a24 0%, #060608 80%);
         color: #ffffff;      
         text-align: center; 
@@ -22,7 +21,7 @@
       }
       
       .container { 
-        background: rgba(20, 20, 25, 0.7); /* Efecto cristal oscuro */
+        background: rgba(20, 20, 25, 0.7);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
         padding: 40px 30px; 
@@ -31,7 +30,6 @@
         width: 100%; 
         max-width: 450px; 
         border: 1px solid rgba(255, 255, 255, 0.05);
-        /* Animación suave de entrada */
         animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
 
@@ -40,16 +38,35 @@
         100% { opacity: 1; transform: translateY(0); }
       }
       
-      /* Transiciones suaves entre pantallas */
-      .pantalla {
-        animation: fadeIn 0.4s ease-out forwards;
-      }
-      @keyframes fadeIn {
-        0% { opacity: 0; }
-        100% { opacity: 1; }
-      }
+      .pantalla { animation: fadeIn 0.4s ease-out forwards; }
+      @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
       
       .logo { width: 220px; margin-bottom: 25px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+
+      /* --- ANIMACIÓN DE CARGA (GLOW) --- */
+      .logo-glow {
+        width: 200px;
+        margin-bottom: 30px;
+        animation: pulseGlow 1.5s infinite alternate ease-in-out;
+      }
+      
+      @keyframes pulseGlow {
+        0% { filter: drop-shadow(0 0 5px rgba(223, 183, 99, 0.3)); transform: scale(1); }
+        100% { filter: drop-shadow(0 0 25px rgba(223, 183, 99, 0.9)); transform: scale(1.05); }
+      }
+
+      .spinner-text {
+        color: #d8b05c;
+        font-size: 15px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        animation: blink 1.5s infinite;
+      }
+
+      @keyframes blink {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 1; }
+      }
 
       h3 {
         font-family: 'Georgia', serif;
@@ -59,6 +76,7 @@
         letter-spacing: 0.5px;
       }
       
+      /* --- BOTONES PRINCIPALES --- */
       .btn { 
         display: block; 
         width: 100%; 
@@ -70,18 +88,33 @@
         font-weight: 600; 
         background: linear-gradient(135deg, #dfb763 0%, #c29543 100%); 
         color: #0b0b0e; 
-        transition: all 0.3s ease;
+        transition: transform 0.1s ease, box-shadow 0.3s ease; 
         text-decoration: none;
         font-size: 16px;
         box-sizing: border-box;
         box-shadow: 0 4px 15px rgba(223, 183, 99, 0.2);
+        -webkit-tap-highlight-color: transparent; 
       }
-      .btn:hover { 
-        background: linear-gradient(135deg, #ecd189 0%, #d6a751 100%); 
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(223, 183, 99, 0.3);
+      
+      .btn:active { transform: scale(0.96); box-shadow: 0 2px 5px rgba(223, 183, 99, 0.1); }
+      .btn:disabled { opacity: 0.6; pointer-events: none; }
+      
+      /* --- BOTONES DE TRIVIA --- */
+      .btn-opcion {
+        background: rgba(255,255,255,0.03);
+        color: #e0e0e0;
+        border: 1px solid rgba(255,255,255,0.08);
+        font-weight: normal;
+        box-shadow: none;
+        text-align: left; 
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 12px;
       }
-      .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+      .btn-opcion:active { background: rgba(255,255,255,0.08); border-color: #d8b05c; }
+      .letra-opcion { color: #d8b05c; font-weight: bold; font-size: 18px; min-width: 25px; }
       
       input { 
         width: 100%; 
@@ -103,12 +136,19 @@
       .premios-grid { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 25px 0; }
       .premio-img { 
         width: 110px; height: 110px; object-fit: cover; border-radius: 14px; 
-        cursor: pointer; border: 2px solid transparent; 
-        transition: all 0.3s ease; background-color: rgba(0,0,0,0.5);
+        border: 2px solid transparent; 
+        transition: transform 0.1s ease, border-color 0.3s ease; 
+        background-color: rgba(0,0,0,0.5);
         box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        -webkit-tap-highlight-color: transparent;
       }
-      .premio-img:hover { border-color: #d8b05c; transform: scale(1.08); box-shadow: 0 8px 20px rgba(216, 176, 92, 0.3); }
+      .premio-img:active { transform: scale(0.92); border-color: #d8b05c; }
+      
       .premio-final { width: 220px; height: 220px; object-fit: cover; border-radius: 24px; margin: 20px auto; display: block; border: 4px solid #d8b05c; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+      
+      /* --- BARRA DE PROGRESO --- */
+      .progress-container { width: 100%; background: rgba(255,255,255,0.1); border-radius: 10px; height: 6px; margin-bottom: 25px; overflow: hidden; }
+      .progress-bar { height: 100%; background: linear-gradient(135deg, #dfb763 0%, #c29543 100%); width: 0%; transition: width 0.5s ease-out; }
       
       .msg { color: #ff5252; font-weight: 500; margin-bottom: 15px; min-height: 20px; }
       .oculto { display: none !important; }
@@ -121,10 +161,16 @@
       <!-- PANTALLA 1: LOGIN -->
       <div id="pantalla-login" class="pantalla">
         <img src="https://res.cloudinary.com/f8l7nucq/image/upload/v1784049017/Origen_logo_p1hlex.png" class="logo" alt="Logo ORIGEN">
-        <h3>Acceso</h3>
+        <h3 id="titulo-login">Acceso</h3>
         <input type="text" id="clave" placeholder="Ingresa tu código...">
         <div id="msg" class="msg"></div>
         <button class="btn" id="btn-acceder" onclick="iniciar()">Acceder</button>
+      </div>
+
+      <!-- PANTALLA 1.5: CARGA (GLOW) -->
+      <div id="pantalla-carga" class="pantalla oculto">
+        <img src="https://res.cloudinary.com/f8l7nucq/image/upload/v1784049017/Origen_logo_p1hlex.png" class="logo-glow" alt="Cargando ORIGEN">
+        <div class="spinner-text">Validando acceso...</div>
       </div>
 
       <!-- PANTALLA 2: REPRODUCTOR DE VIDEO -->
@@ -135,13 +181,14 @@
       <!-- PANTALLA 3: INSTRUCCIONES -->
       <div id="pantalla-instrucciones" class="pantalla oculto">
         <img src="https://res.cloudinary.com/f8l7nucq/image/upload/v1784049017/Origen_logo_p1hlex.png" class="logo" style="width:150px; margin-bottom:15px;" alt="Logo ORIGEN">
-        <h3>¡Trivia!</h3>
+        <h3 style="color: #d8b05c;">¡Trivia!</h3>
         <p style="color: #aaa; margin-bottom: 25px;">Si acertás todas las preguntas, tenés un premio.</p>
         <button class="btn" onclick="mostrarTrivia()">Comenzar Trivia</button>
       </div>
 
       <!-- PANTALLA 4: TRIVIA -->
       <div id="pantalla-trivia" class="pantalla oculto">
+        <div class="progress-container"><div id="progress-bar" class="progress-bar"></div></div>
         <h3 id="pregunta-texto" style="font-size: 20px; line-height: 1.4; margin-bottom: 30px;"></h3>
         <div id="opciones-botones"></div>
       </div>
@@ -169,60 +216,81 @@
       <div id="pantalla-final" class="pantalla oculto">
         <h3 id="texto-final" style="color: #d8b05c;"></h3>
         <img id="img-final" src="" class="premio-final" alt="Tu Premio">
-        <a id="btn-descarga" href="" download="Premio_Origen.jpg" class="btn">Descargar Premio</a>
+        <a id="btn-descarga" href="" download="Premio_Origen.jpg" class="btn">Preparando premio...</a>
       </div>
 
     </div>
 
     <script>
       // ==========================================
-      // PEGA AQUÍ LA URL DE TU APPS SCRIPT (PASO 1)
+      // PEGA AQUÍ LA URL NUEVA DE TU APPS SCRIPT
       const API_URL = "https://script.google.com/macros/s/AKfycbwvX-iISjkAofxKTCSR_6LVu9ZsXHaSjZPMLNSw-epxxAtiqOORxOZORAgeB-w2MUpJtw/exec";
       // ==========================================
 
       var preguntas = []; var indice = 0; var aciertos = 0; var clave = "";
 
-      // Capturar parámetros de la URL de GitHub (ej: ?parada=1&modo=trivia)
       const urlParams = new URLSearchParams(window.location.search);
       const urlParada = urlParams.get('parada') || "";
       const urlModo = urlParams.get('modo') || "";
+
+      window.addEventListener('DOMContentLoaded', () => {
+        if (urlParada === "" && urlModo === "") {
+          document.getElementById('pantalla-login').innerHTML = `
+            <img src="https://res.cloudinary.com/f8l7nucq/image/upload/v1784049017/Origen_logo_p1hlex.png" class="logo" alt="Logo ORIGEN">
+            <h3 style="color: #d8b05c; margin-top: 10px;">Escaneo Requerido</h3>
+            <p style="color: #aaa; margin-bottom: 25px; font-size: 15px; line-height: 1.5;">Para vivir la experiencia ORIGEN, debes escanear el código QR oficial de tu mesa o parada.</p>
+          `;
+        }
+      });
+
+      function vibrar(ms) {
+        if (navigator.vibrate) navigator.vibrate(ms);
+      }
 
       function mostrar(id) {
         document.querySelectorAll('.container > div').forEach(div => div.classList.add('oculto'));
         document.getElementById(id).classList.remove('oculto');
       }
 
-      // Conexión segura con Apps Script mediante fetch
       async function peticionAPI(datos) {
         try {
           const respuesta = await fetch(API_URL, {
             method: 'POST',
             body: JSON.stringify(datos),
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' } // text/plain evita bloqueos CORS
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
           });
           return await respuesta.json();
         } catch (e) {
-          return { error: "Error de conexión. Intenta de nuevo." };
+          return { error: "Error de conexión con el servidor. Intenta de nuevo." };
         }
       }
 
       async function iniciar() {
+        vibrar(30);
         clave = document.getElementById('clave').value;
-        if(clave.trim() === "") { document.getElementById('msg').innerText = "Ingresa tu código."; return; }
+        if(clave.trim() === "") { 
+          document.getElementById('msg').innerText = "Ingresa tu código."; 
+          return; 
+        }
         
-        document.getElementById('msg').style.color = "#d8b05c";
-        document.getElementById('msg').innerText = "Validando...";
-        document.getElementById('btn-acceder').disabled = true;
+        // Limpiamos mensajes anteriores y mostramos la pantalla de carga animada
+        document.getElementById('msg').innerText = "";
+        mostrar('pantalla-carga');
 
-        // Llamamos al backend
-        const res = await peticionAPI({ accion: "validarClave", clave: clave, parada: urlParada, modo: urlModo });
+        // Promise.all permite esperar la respuesta de la base de datos Y además un mínimo de 1.5 segundos
+        // Esto asegura que la animación de carga premium siempre se vea fluida.
+        const [res] = await Promise.all([
+          peticionAPI({ accion: "validarClave", clave: clave, parada: urlParada, modo: urlModo }),
+          new Promise(resolve => setTimeout(resolve, 1500))
+        ]);
         
-        document.getElementById('btn-acceder').disabled = false;
         render(res);
       }
 
       function render(res) {
         if (res.error) {
+          vibrar([50, 50, 50]);
+          mostrar('pantalla-login'); // Volvemos al login si el código está mal
           document.getElementById('msg').style.color = "#ff5252";
           document.getElementById('msg').innerText = res.error;
           return;
@@ -233,7 +301,7 @@
           var urlVideo = esIphone ? (res.urlIphone || res.url) : res.url;
 
           document.getElementById('video-container').innerHTML = `
-            <h3>${res.lugar}</h3>
+            <h3 style="color: #d8b05c; text-transform: uppercase; font-size: 22px;">${res.lugar}</h3>
             <div style='border-radius:18px; overflow:hidden; background:#000; margin-bottom:20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);'>
               <video src='${urlVideo}' controls controlsList="nodownload" oncontextmenu="return false;" playsinline webkit-playsinline preload="metadata" width='100%'></video>
             </div>`;
@@ -247,31 +315,51 @@
 
       function mostrarTrivia() {
         mostrar('pantalla-trivia');
+        
+        var porcentaje = (indice / preguntas.length) * 100;
+        document.getElementById('progress-bar').style.width = porcentaje + "%";
+
         var p = preguntas[indice];
-        document.getElementById('pregunta-texto').innerText = p.pregunta;
+        
+        var preguntaHTML = p.pregunta;
+        var partes = p.pregunta.split(':');
+        if (partes.length > 1) {
+           preguntaHTML = "<span style='color: #d8b05c;'>" + partes[0] + ":</span>" + partes.slice(1).join(':');
+        }
+
+        document.getElementById('pregunta-texto').innerHTML = preguntaHTML;
+        
         document.getElementById('opciones-botones').innerHTML =
-          "<button class='btn' style='background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); font-weight: normal; box-shadow: none;' onclick='evaluar(this, \"A\",\""+p.correct+"\")'>A) " + p.A + "</button>" +
-          "<button class='btn' style='background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); font-weight: normal; box-shadow: none;' onclick='evaluar(this, \"B\",\""+p.correct+"\")'>B) " + p.B + "</button>" +
-          "<button class='btn' style='background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); font-weight: normal; box-shadow: none;' onclick='evaluar(this, \"C\",\""+p.correct+"\")'>C) " + p.C + "</button>";
+          "<button class='btn btn-opcion' onclick='evaluar(this, \"A\",\""+p.correct+"\")'><span class='letra-opcion'>A)</span> " + p.A + "</button>" +
+          "<button class='btn btn-opcion' onclick='evaluar(this, \"B\",\""+p.correct+"\")'><span class='letra-opcion'>B)</span> " + p.B + "</button>" +
+          "<button class='btn btn-opcion' onclick='evaluar(this, \"C\",\""+p.correct+"\")'><span class='letra-opcion'>C)</span> " + p.C + "</button>";
       }
 
       function evaluar(btn, opc, correct) {
+        vibrar(40); 
         var btns = document.getElementById('opciones-botones').querySelectorAll('.btn');
         btns.forEach(b => b.disabled = true);
         
         if (opc == correct) {
           aciertos++;
-          btn.style.background = "#27ae60";
+          btn.style.background = "rgba(39, 174, 96, 0.2)";
           btn.style.borderColor = "#27ae60";
+          btn.querySelector('.letra-opcion').style.color = "#27ae60";
         } else {
-          btn.style.background = "#e74c3c";
+          vibrar([40, 50, 40]); 
+          btn.style.background = "rgba(231, 76, 60, 0.2)";
           btn.style.borderColor = "#e74c3c";
+          btn.querySelector('.letra-opcion').style.color = "#e74c3c";
         }
         
         setTimeout(function() {
           indice++;
-          if (indice < preguntas.length) mostrarTrivia();
-          else mostrarSelector();
+          if (indice < preguntas.length) {
+            mostrarTrivia();
+          } else {
+            document.getElementById('progress-bar').style.width = "100%";
+            setTimeout(mostrarSelector, 600);
+          }
         }, 1000);
       }
 
@@ -286,11 +374,55 @@
       }
 
       function finalizar(premio, url) {
+        vibrar(40);
         peticionAPI({ accion: "guardarResultado", usuario: clave, aciertos: aciertos, premio: premio });
         mostrar('pantalla-final');
         document.getElementById('texto-final').innerText = "¡Has seleccionado: " + premio + "!";
         document.getElementById('img-final').src = url;
-        document.getElementById('btn-descarga').href = url;
+        
+        generarImagenConVencimiento(url);
+      }
+
+      function generarImagenConVencimiento(urlOriginal) {
+        const btnDescarga = document.getElementById('btn-descarga');
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        
+        img.crossOrigin = "Anonymous";
+        
+        img.onload = function() {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          
+          const altoZocalo = Math.max(50, canvas.height * 0.12);
+          ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+          ctx.fillRect(0, canvas.height - altoZocalo, canvas.width, altoZocalo);
+          
+          const fecha = new Date();
+          fecha.setMonth(fecha.getMonth() + 1);
+          const fechaStr = fecha.toLocaleDateString('es-UY');
+          
+          const tamañoLetra = Math.max(16, canvas.width * 0.035);
+          ctx.font = `bold ${tamañoLetra}px sans-serif`;
+          ctx.fillStyle = "#dfb763";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          
+          ctx.fillText(`VÁLIDO HASTA: ${fechaStr}`, canvas.width / 2, canvas.height - (altoZocalo / 2));
+          
+          const dataURL = canvas.toDataURL("image/jpeg", 0.9);
+          btnDescarga.href = dataURL;
+          btnDescarga.innerText = "Descargar Premio";
+        };
+        
+        img.onerror = function() {
+          btnDescarga.href = urlOriginal;
+          btnDescarga.innerText = "Descargar Premio";
+        };
+        
+        img.src = urlOriginal;
       }
     </script>
   </body>
