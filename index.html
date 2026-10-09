@@ -43,24 +43,21 @@
       
       .logo { width: 220px; margin-bottom: 25px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
 
-      /* --- ANIMACIÓN DE CARGA (GLOW) --- */
+      /* --- ANIMACIÓN DE CARGA (GLOW MEJORADO) --- */
       .logo-glow {
         width: 200px;
         margin-bottom: 30px;
-        animation: pulseGlow 1.5s infinite alternate ease-in-out;
+        animation: pulseGlow 1.2s infinite alternate ease-in-out;
       }
       
       @keyframes pulseGlow {
-        0% { filter: drop-shadow(0 0 5px rgba(223, 183, 99, 0.3)); transform: scale(1); }
-        100% { filter: drop-shadow(0 0 25px rgba(223, 183, 99, 0.9)); transform: scale(1.05); }
+        0% { filter: drop-shadow(0 0 5px rgba(223, 183, 99, 0.2)); transform: scale(0.98); }
+        100% { filter: drop-shadow(0 0 35px rgba(223, 183, 99, 0.95)); transform: scale(1.05); }
       }
 
       .spinner-text {
-        color: #d8b05c;
-        font-size: 15px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        animation: blink 1.5s infinite;
+        color: #d8b05c; font-size: 15px; letter-spacing: 3px; text-transform: uppercase;
+        animation: blink 1.5s infinite; font-weight: bold;
       }
 
       @keyframes blink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
@@ -92,27 +89,30 @@
       input::placeholder { color: #888899; }
       input:focus { border-color: #d8b05c; background-color: rgba(0,0,0,0.5); box-shadow: 0 0 0 2px rgba(216, 176, 92, 0.2); }
       
-      /* --- TARJETAS DE PREMIOS (NUEVO DISEÑO CON GLOW) --- */
+      /* --- TARJETAS DE PREMIOS ANIMADAS --- */
       .premios-grid { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 25px 0; }
       
       .premio-item {
         display: flex; flex-direction: column; align-items: center; justify-content: center;
         background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px;
-        padding: 10px; cursor: pointer; transition: transform 0.1s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        -webkit-tap-highlight-color: transparent;
+        padding: 10px; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        -webkit-tap-highlight-color: transparent; position: relative; width: 110px;
       }
-      /* Efecto Glow al presionar */
-      .premio-item:active {
-        transform: scale(0.92);
-        border-color: #d8b05c;
-        box-shadow: 0 0 20px rgba(223, 183, 99, 0.7);
-        background: rgba(223, 183, 99, 0.1);
-      }
+      
       .premio-img { 
         width: 100px; height: 100px; object-fit: cover; border-radius: 10px; margin-bottom: 8px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       }
       .premio-label { color: #d8b05c; font-size: 14px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; }
+      
+      /* Clase que se agrega por JS al seleccionar */
+      .premio-seleccionado {
+        border-color: #d8b05c !important;
+        box-shadow: 0 0 30px rgba(223, 183, 99, 0.8), inset 0 0 15px rgba(223, 183, 99, 0.3) !important;
+        background: rgba(223, 183, 99, 0.15) !important;
+        transform: scale(1.1) !important;
+        z-index: 10;
+      }
       
       .premio-final { width: 220px; height: 220px; object-fit: cover; border-radius: 24px; margin: 20px auto; display: block; border: 4px solid #d8b05c; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
       
@@ -170,19 +170,19 @@
         
         <div class="premios-grid">
           <!-- Tarjeta 1: Uvita -->
-          <div class="premio-item" onclick="finalizar('Uvita', 'https://res.cloudinary.com/f8l7nucq/image/upload/v1784051080/two-dark-alcoholic-drinks-on-rustic-wooden-table-2026-03-24-02-58-58-utc_qf7qfq.jpg')">
+          <div class="premio-item" onclick="seleccionarPremio(this, 'Uvita', 'https://res.cloudinary.com/f8l7nucq/image/upload/v1784051080/two-dark-alcoholic-drinks-on-rustic-wooden-table-2026-03-24-02-58-58-utc_qf7qfq.jpg')">
             <img src="https://res.cloudinary.com/f8l7nucq/image/upload/v1784051080/two-dark-alcoholic-drinks-on-rustic-wooden-table-2026-03-24-02-58-58-utc_qf7qfq.jpg" class="premio-img" alt="Uvita">
             <div class="premio-label">Uvita</div>
           </div>
           
           <!-- Tarjeta 2: Fainá -->
-          <div class="premio-item" onclick="finalizar('Fainá', 'https://res.cloudinary.com/f8l7nucq/image/upload/v1784051076/pepperoni-pizza-freshly-sliced-and-ready-to-eat-2026-03-17-04-06-54-utc_ypzkdm.jpg')">
+          <div class="premio-item" onclick="seleccionarPremio(this, 'Fainá', 'https://res.cloudinary.com/f8l7nucq/image/upload/v1784051076/pepperoni-pizza-freshly-sliced-and-ready-to-eat-2026-03-17-04-06-54-utc_ypzkdm.jpg')">
             <img src="https://res.cloudinary.com/f8l7nucq/image/upload/v1784051076/pepperoni-pizza-freshly-sliced-and-ready-to-eat-2026-03-17-04-06-54-utc_ypzkdm.jpg" class="premio-img" alt="Fainá">
             <div class="premio-label">Fainá</div>
           </div>
 
           <!-- Tarjeta 3: Café -->
-          <div class="premio-item" onclick="finalizar('Café', 'https://res.cloudinary.com/f8l7nucq/image/upload/v1784051065/shekel-money-bag-and-shield-on-blue-background-2026-03-24-14-14-10-utc_sotjxd.jpg')">
+          <div class="premio-item" onclick="seleccionarPremio(this, 'Café', 'https://res.cloudinary.com/f8l7nucq/image/upload/v1784051065/shekel-money-bag-and-shield-on-blue-background-2026-03-24-14-14-10-utc_sotjxd.jpg')">
             <img src="https://res.cloudinary.com/f8l7nucq/image/upload/v1784051065/shekel-money-bag-and-shield-on-blue-background-2026-03-24-14-14-10-utc_sotjxd.jpg" class="premio-img" alt="Café">
             <div class="premio-label">Café</div>
           </div>
@@ -254,11 +254,11 @@
         if(clave.trim() === "") { document.getElementById('msg').innerText = "Ingresa tu código."; return; }
         
         document.getElementById('msg').innerText = "";
-        mostrar('pantalla-carga');
+        mostrar('pantalla-carga'); // Pantalla glow activada
 
         const [res] = await Promise.all([
           peticionAPI({ accion: "validarClave", clave: clave, parada: urlParada, modo: urlModo }),
-          new Promise(resolve => setTimeout(resolve, 1500))
+          new Promise(resolve => setTimeout(resolve, 1500)) // Pausa de 1.5s para apreciar el glow
         ]);
         
         render(res);
@@ -348,8 +348,29 @@
         }
       }
 
+      // NUEVA ANIMACIÓN DE SELECCIÓN DE PREMIO CON RETRASO
+      function seleccionarPremio(elemento, premio, url) {
+        // Evitar doble clic
+        if (elemento.classList.contains('bloqueado')) return;
+        
+        vibrar(50);
+        
+        // Bloquear todos los botones y oscurecer los no seleccionados
+        document.querySelectorAll('.premio-item').forEach(el => {
+          el.classList.add('bloqueado');
+          if (el !== elemento) el.style.opacity = '0.3';
+        });
+
+        // Encender el seleccionado con el glow dorado
+        elemento.classList.add('premio-seleccionado');
+
+        // Esperamos 1.2 segundos para que el usuario disfrute el efecto visual antes de cambiar
+        setTimeout(() => {
+          finalizar(premio, url);
+        }, 1200);
+      }
+
       function finalizar(premio, url) {
-        vibrar(40);
         peticionAPI({ accion: "guardarResultado", usuario: clave, aciertos: aciertos, premio: premio });
         mostrar('pantalla-final');
         document.getElementById('texto-final').innerText = "¡Has seleccionado: " + premio + "!";
@@ -358,6 +379,7 @@
         generarImagenConVencimiento(url);
       }
 
+      // MOTOR DE IMAGEN MEJORADO (No tapa la imagen original)
       function generarImagenConVencimiento(urlOriginal) {
         const btnDescarga = document.getElementById('btn-descarga');
         const canvas = document.createElement('canvas');
@@ -368,26 +390,30 @@
         
         img.onload = function() {
           canvas.width = img.width;
-          canvas.height = img.height;
+          
+          // En lugar de pintar sobre la imagen, LE AGREGAMOS espacio abajo
+          const altoZocalo = Math.max(35, img.height * 0.08);
+          canvas.height = img.height + altoZocalo; // La imagen crece en altura
+          
+          // Dibujamos la imagen original arriba
           ctx.drawImage(img, 0, 0);
           
-          // Zócalo reducido al 5% del alto total, anclado al final exacto
-          const altoZocalo = Math.max(25, canvas.height * 0.05);
-          ctx.fillStyle = "rgba(0, 0, 0, 0.85)";
-          ctx.fillRect(0, canvas.height - altoZocalo, canvas.width, altoZocalo);
+          // Dibujamos el rectángulo oscuro ABAJO de la imagen
+          ctx.fillStyle = "#060608";
+          ctx.fillRect(0, img.height, canvas.width, altoZocalo);
           
           const fecha = new Date();
           fecha.setMonth(fecha.getMonth() + 1);
           const fechaStr = fecha.toLocaleDateString('es-UY');
           
-          // Letra achicada para adaptarse al nuevo zócalo fino
-          const tamañoLetra = Math.max(12, canvas.width * 0.025);
+          const tamañoLetra = Math.max(14, canvas.width * 0.035);
           ctx.font = `bold ${tamañoLetra}px sans-serif`;
           ctx.fillStyle = "#dfb763";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           
-          ctx.fillText(`VÁLIDO HASTA: ${fechaStr}`, canvas.width / 2, canvas.height - (altoZocalo / 2));
+          // Escribimos el texto centrado en ese nuevo bloque inferior
+          ctx.fillText(`VÁLIDO HASTA: ${fechaStr}`, canvas.width / 2, img.height + (altoZocalo / 2));
           
           const dataURL = canvas.toDataURL("image/jpeg", 0.9);
           btnDescarga.href = dataURL;
