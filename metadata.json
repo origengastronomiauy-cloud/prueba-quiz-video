@@ -1,0 +1,6 @@
+{
+  "name": "ORIGEN - Experiencia Cultural y Gastronómica",
+  "description": "Rediseño visual premium y arquitectura API REST para la experiencia gastronómica y cultural ORIGEN (GitHub Pages + Google Apps Script).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

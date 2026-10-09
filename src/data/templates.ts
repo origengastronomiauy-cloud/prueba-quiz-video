@@ -1,0 +1,731 @@
+/**
+ * Código fuente completo para exportar a GitHub Pages (Frontend)
+ * y Google Apps Script (Backend REST API).
+ */
+
+export const FRONTEND_HTML_CODE = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORIGEN — Experiencia Cultural & Gastronómica</title>
+  
+  <!-- Tipografías de alta gama: Cormorant Garamond (Serif de lujo) y Plus Jakarta Sans (Texto limpio) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- DESIGN SYSTEM: ORIGEN LUXURY DARK & GOLD PALETTE --- */
+    :root {
+      --bg-deep: #0b0b0e;
+      --card-bg: rgba(18, 18, 24, 0.82);
+      --card-border: rgba(223, 183, 99, 0.22);
+      --card-inner-glow: rgba(223, 183, 99, 0.05);
+      
+      --gold-primary: #dfb763;
+      --gold-secondary: #c29543;
+      --gold-light: #ecd189;
+      --gold-dark: #916e28;
+      
+      --text-main: #f8f8fa;
+      --text-muted: #a3a3b2;
+      --text-subtle: #6c6c7b;
+      
+      --input-bg: rgba(11, 11, 14, 0.9);
+      --input-border: rgba(255, 255, 255, 0.12);
+      --input-focus: #dfb763;
+      
+      --danger-color: #e05244;
+      --success-color: #27ae60;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 50% 12%, rgba(223, 183, 99, 0.12) 0%, transparent 55%),
+                  radial-gradient(circle at 50% 85%, rgba(194, 149, 67, 0.06) 0%, transparent 60%),
+                  var(--bg-deep);
+      background-attachment: fixed;
+      color: var(--text-main);
+      text-align: center;
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* CONTENEDOR PRINCIPAL: GLASSMORPHISM & SILKY SHADOWS */
+    .container {
+      background: var(--card-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 44px 30px 40px;
+      box-shadow: 
+        0 24px 60px rgba(0, 0, 0, 0.85),
+        0 0 40px var(--card-inner-glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    /* DETALLE SUTIL DE LUZ SUPERIOR */
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 15%;
+      right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(223, 183, 99, 0.6), transparent);
+    }
+
+    /* LOGOTIPO */
+    .logo {
+      width: 200px;
+      max-width: 80%;
+      height: auto;
+      margin: 0 auto 28px auto;
+      display: block;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6));
+      transition: transform 0.3s ease;
+    }
+    .logo:hover {
+      transform: scale(1.02);
+    }
+
+    /* TÍTULOS Y TIPOGRAFÍA SERIF ELEGANTE */
+    h3 {
+      font-family: 'Cormorant Garamond', 'Georgia', serif;
+      font-size: 30px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      line-height: 1.25;
+      color: #ffffff;
+      margin: 0 0 18px 0;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    p {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* INPUTS PREMIUM */
+    input {
+      width: 100%;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      border: 1px solid var(--input-border);
+      background-color: var(--input-bg);
+      color: #ffffff;
+      border-radius: 14px;
+      font-size: 16px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      letter-spacing: 0.06em;
+      text-align: center;
+      outline: none;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    input::placeholder {
+      color: var(--text-subtle);
+      letter-spacing: 0.02em;
+    }
+    input:focus {
+      border-color: var(--gold-primary);
+      box-shadow: 
+        0 0 0 3px rgba(223, 183, 99, 0.18),
+        inset 0 2px 5px rgba(0, 0, 0, 0.6);
+      background-color: rgba(15, 15, 20, 0.95);
+    }
+
+    /* BOTONES FÍSICOS PREMIUM DE ORO METÁLICO */
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      min-height: 52px;
+      padding: 15px 24px;
+      margin: 12px auto;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 14px;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 35%, var(--gold-secondary) 85%, var(--gold-dark) 100%);
+      color: #0b0b0e;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+      box-shadow: 
+        0 6px 20px rgba(223, 183, 99, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.25);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: linear-gradient(135deg, #f5e4b2 0%, var(--gold-light) 30%, var(--gold-primary) 75%, var(--gold-secondary) 100%);
+      box-shadow: 
+        0 8px 28px rgba(223, 183, 99, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn:active:not(:disabled) {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 
+        0 3px 12px rgba(223, 183, 99, 0.22),
+        inset 0 2px 4px rgba(0, 0, 0, 0.35);
+    }
+
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      filter: grayscale(0.2);
+    }
+
+    /* BOTONES DE TRIVIA CON ESTILO ELEGANTE */
+    #opciones-botones .btn {
+      text-transform: none;
+      font-weight: 500;
+      font-size: 15px;
+      letter-spacing: 0.01em;
+      justify-content: flex-start;
+      text-align: left;
+      padding: 16px 20px;
+      background: rgba(22, 22, 30, 0.85);
+      color: #f0f0f4;
+      border: 1px solid rgba(223, 183, 99, 0.22);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      margin-bottom: 12px;
+      text-shadow: none;
+    }
+
+    #opciones-botones .btn:hover:not(:disabled) {
+      background: rgba(30, 30, 42, 0.95);
+      border-color: var(--gold-primary);
+      box-shadow: 0 6px 20px rgba(223, 183, 99, 0.2);
+      transform: translateX(3px);
+    }
+
+    /* GRID DE PREMIOS PREMIUM */
+    .premios-grid {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 26px 0 10px;
+    }
+
+    .premio-img {
+      width: 114px;
+      height: 114px;
+      object-fit: cover;
+      border-radius: 16px;
+      cursor: pointer;
+      border: 2px solid rgba(223, 183, 99, 0.3);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      background-color: #0b0b0e;
+    }
+
+    .premio-img:hover {
+      border-color: var(--gold-primary);
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(223, 183, 99, 0.35);
+    }
+
+    .premio-final {
+      width: 220px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 22px;
+      margin: 22px auto;
+      display: block;
+      border: 3px solid var(--gold-primary);
+      box-shadow: 
+        0 14px 40px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(223, 183, 99, 0.3);
+      animation: zoomIn 0.5s ease-out;
+    }
+
+    /* MENSAJES DE ESTADO Y ERROR */
+    .msg {
+      color: var(--danger-color);
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 18px;
+      min-height: 20px;
+      transition: all 0.2s ease;
+    }
+
+    /* CLASE DE VISIBILIDAD & ANIMACIONES SUAVES DE PANTALLAS */
+    .oculto {
+      display: none !important;
+    }
+
+    .container > div:not(.oculto) {
+      animation: fadeInScreen 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeInScreen {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.99);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes zoomIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* REPRODUCTOR DE VIDEO SEGURO */
+    .video-wrapper {
+      border-radius: 18px;
+      overflow: hidden;
+      background: #000;
+      margin-bottom: 22px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(223, 183, 99, 0.25);
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      border-radius: 18px;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- PANTALLA 1: LOGIN -->
+  <div id="pantalla-login">
+    <img src="https://res.cloudinary.com/f8l7nucq/image/upload/v1784049017/Origen_logo_p1hlex.png" class="logo" alt="Logo ORIGEN">
+    <h3>Acceso</h3>
+    <input type="text" id="clave" placeholder="Ingresa tu código..." autocomplete="off" autocapitalize="characters">
+    <div id="msg" class="msg"></div>
+    <button class="btn" onclick="iniciar()">Acceder</button>
+  </div>
+
+  <!-- PANTALLA NUEVA: REPRODUCTOR DE VIDEO -->
+  <div id="pantalla-video" class="oculto">
+    <div id="video-container"></div>
+  </div>
+
+  <!-- PANTALLA 2: INSTRUCCIONES -->
+  <div id="pantalla-instrucciones" class="oculto">
+    <img src="https://res.cloudinary.com/f8l7nucq/image/upload/v1784049017/Origen_logo_p1hlex.png" class="logo" style="width:150px; margin-bottom:18px;" alt="Logo ORIGEN">
+    <h3>¡Trivia!</h3>
+    <p>Si acertás todas las preguntas, tenés un premio.</p>
+    <button class="btn" onclick="mostrarTrivia()">Comenzar Trivia</button>
+  </div>
+
+  <!-- PANTALLA 3: TRIVIA -->
+  <div id="pantalla-trivia" class="oculto">
+    <h3 id="pregunta-texto"></h3>
+    <div id="opciones-botones"></div>
+  </div>
+
+  <!-- PANTALLA 4: PREMIOS -->
+  <div id="pantalla-premios" class="oculto">
+    <h3>¡Felicitaciones, acertaste todo!</h3>
+    <p>Elige tu premio:</p>
+    <div class="premios-grid">
+      <img src="https://res.cloudinary.com/f8l7nucq/image/upload/v1784051080/two-dark-alcoholic-drinks-on-rustic-wooden-table-2026-03-24-02-58-58-utc_qf7qfq.jpg" class="premio-img" alt="Premio 1" onclick="finalizar('Premio 1', this.src)">
+      <img src="https://res.cloudinary.com/f8l7nucq/image/upload/v1784051076/pepperoni-pizza-freshly-sliced-and-ready-to-eat-2026-03-17-04-06-54-utc_ypzkdm.jpg" class="premio-img" alt="Premio 2" onclick="finalizar('Premio 2', this.src)">
+      <img src="https://res.cloudinary.com/f8l7nucq/image/upload/v1784051065/shekel-money-bag-and-shield-on-blue-background-2026-03-24-14-14-10-utc_sotjxd.jpg" class="premio-img" alt="Premio 3" onclick="finalizar('Premio 3', this.src)">
+    </div>
+  </div>
+  
+  <!-- PANTALLA ERROR -->
+  <div id="pantalla-error" class="oculto">
+    <h3>Casi lo logras...</h3>
+    <p id="texto-error"></p>
+    <p>Para obtener un premio, necesitas acertar todas las preguntas.</p>
+    <button class="btn" onclick="location.reload()">Volver a intentar</button>
+  </div>
+
+  <!-- PANTALLA FINAL (DESCARGA) -->
+  <div id="pantalla-final" class="oculto">
+    <h3 id="texto-final"></h3>
+    <img id="img-final" src="" class="premio-final" alt="Tu Premio">
+    <a id="btn-descarga" href="" download="Premio_Origen.jpg" class="btn">Descargar Premio</a>
+  </div>
+
+</div>
+
+<script>
+  // =========================================================================
+  // CONFIGURACIÓN TÉCNICA - MIGRACIÓN A GITHUB PAGES & APPS SCRIPT API
+  // =========================================================================
+  
+  // 1. URL DE TU API: Reemplaza "URL_AQUI" con la URL de tu Web App desplegada en Google Apps Script
+  const API_URL = "URL_AQUI"; 
+
+  // 2. PARÁMETROS URL: Reemplazo para <?= parada ?> y <?= modo ?> en páginas estáticas de GitHub Pages
+  // Ejemplo de URL en GitHub Pages: https://tu-usuario.github.io/origen/?parada=1
+  // o para Trivia: https://tu-usuario.github.io/origen/?modo=trivia
+  const urlParams = new URLSearchParams(window.location.search);
+  const paradaParam = urlParams.get('parada') || "";
+  const modoParam = urlParams.get('modo') || "";
+
+  var preguntas = []; 
+  var indice = 0; 
+  var aciertos = 0; 
+  var clave = "";
+
+  // Navegación entre pantallas manteniendo la estructura del DOM
+  function mostrar(id) {
+    document.querySelectorAll('.container > div').forEach(div => div.classList.add('oculto'));
+    const target = document.getElementById(id);
+    if (target) {
+      target.classList.remove('oculto');
+    }
+  }
+
+  // Helper HTTP para conectar con Google Apps Script sin bloqueos de CORS
+  // Nota técnica: Enviar como text/plain previene la solicitud preflight OPTIONS del navegador
+  async function llamarApi(datos) {
+    if (API_URL === "URL_AQUI" || !API_URL) {
+      throw new Error("Debes configurar la constante API_URL con la URL de tu Google Apps Script.");
+    }
+
+    const respuesta = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(datos)
+    });
+
+    if (!respuesta.ok) {
+      throw new Error("HTTP error " + respuesta.status);
+    }
+    return await respuesta.json();
+  }
+
+  async function iniciar() {
+    clave = document.getElementById('clave').value.trim();
+    const msgEl = document.getElementById('msg');
+    
+    if (!clave) {
+      msgEl.innerText = "Por favor ingresa tu código.";
+      return;
+    }
+
+    msgEl.innerText = "Validando...";
+
+    try {
+      // Reemplazo de google.script.run.withSuccessHandler(render).validarClave(...)
+      const res = await llamarApi({
+        action: "validarClave",
+        clave: clave,
+        parada: paradaParam,
+        modo: modoParam
+      });
+      render(res);
+    } catch (err) {
+      console.error(err);
+      msgEl.innerText = err.message.includes("API_URL") 
+        ? err.message 
+        : "Error de conexión con el servidor.";
+    }
+  }
+
+  function render(res) {
+    const msgEl = document.getElementById('msg');
+    if (res.error) {
+      msgEl.innerText = res.error;
+      return;
+    }
+    msgEl.innerText = "";
+    
+    if (res.tipo == "video") {
+      // 1. Detectamos si el celular que abrió la app es un iPhone, iPad o iPod
+      var esIphone = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      var urlVideo = "";
+
+      // 2. Asignamos el formato correcto según el celular (lógica original intacta)
+      if (esIphone) {
+        urlVideo = res.urlIphone || res.url;
+      } else {
+        urlVideo = res.url;
+      }
+
+      // 3. Mostramos el reproductor dentro de la pantalla dedicada de video con protección anticopia
+      document.getElementById('video-container').innerHTML = \`
+        <h3>\${res.lugar || "Experiencia ORIGEN"}</h3>
+        <div class="video-wrapper">
+          <video
+            src='\${urlVideo}'
+            controls
+            controlsList="nodownload"
+            oncontextmenu="return false;"
+            playsinline
+            webkit-playsinline
+            preload="metadata"
+            width='100%'>
+          </video>
+        </div>\`;
+      
+      // 4. Cambiamos de pantalla para ocultar el login y mostrar el reproductor
+      mostrar('pantalla-video');
+        
+    } else if (res.tipo == "trivia") {
+      preguntas = res.data || [];
+      indice = 0;
+      aciertos = 0;
+      mostrar('pantalla-instrucciones');
+    }
+  }
+
+  function mostrarTrivia() {
+    mostrar('pantalla-trivia');
+    var p = preguntas[indice];
+    document.getElementById('pregunta-texto').innerText = p.pregunta;
+    document.getElementById('opciones-botones').innerHTML =
+      "<button class='btn' onclick='evaluar(this, \"A\",\""+p.correct+"\")'><strong>A)</strong>&nbsp; " + p.A + "</button>" +
+      "<button class='btn' onclick='evaluar(this, \"B\",\""+p.correct+"\")'><strong>B)</strong>&nbsp; " + p.B + "</button>" +
+      "<button class='btn' onclick='evaluar(this, \"C\",\""+p.correct+"\")'><strong>C)</strong>&nbsp; " + p.C + "</button>";
+  }
+
+  function evaluar(btn, opc, correct) {
+    var btns = document.getElementById('opciones-botones').querySelectorAll('.btn');
+    btns.forEach(b => b.disabled = true);
+    
+    if (opc == correct) {
+      aciertos++;
+      btn.style.background = "linear-gradient(135deg, #2ecc71, #27ae60)";
+      btn.style.borderColor = "#2ecc71";
+      btn.style.color = "#ffffff";
+    } else {
+      btn.style.background = "linear-gradient(135deg, #e74c3c, #c0392b)";
+      btn.style.borderColor = "#e74c3c";
+      btn.style.color = "#ffffff";
+    }
+    
+    setTimeout(function() {
+      indice++;
+      if (indice < preguntas.length) mostrarTrivia();
+      else mostrarSelector();
+    }, 1000);
+  }
+
+  function mostrarSelector() {
+    if (aciertos === preguntas.length) {
+      mostrar('pantalla-premios');
+    } else {
+      mostrar('pantalla-error');
+      document.getElementById('texto-error').innerText = "Obtuviste " + aciertos + " de " + preguntas.length + " aciertos.";
+      
+      // Guardado asíncrono con fetch
+      llamarApi({
+        action: "guardarResultado",
+        usuario: clave,
+        aciertos: aciertos,
+        premio: "Sin premio"
+      }).catch(err => console.error("Error al registrar resultado:", err));
+    }
+  }
+
+  function finalizar(premio, url) {
+    // Guardado asíncrono con fetch
+    llamarApi({
+      action: "guardarResultado",
+      usuario: clave,
+      aciertos: aciertos,
+      premio: premio
+    }).catch(err => console.error("Error al registrar premio:", err));
+
+    mostrar('pantalla-final');
+    document.getElementById('texto-final').innerText = "¡Has seleccionado: " + premio + "!";
+    document.getElementById('img-final').src = url;
+    document.getElementById('btn-descarga').href = url;
+  }
+</script>
+</body>
+</html>`;
+
+export const BACKEND_APPS_SCRIPT_CODE = `/**
+ * =========================================================================
+ * BACKEND API REST - PROYECTO ORIGEN (Google Apps Script)
+ * =========================================================================
+ * Esta versión sustituye HtmlService por una API REST JSON universal.
+ * Compatible con llamadas fetch() desde GitHub Pages u otros dominios externos.
+ */
+
+// Permite peticiones POST desde el Frontend (fetch POST)
+function doPost(e) {
+  return despacharPeticion(e);
+}
+
+// Permite peticiones GET como respaldo o para pruebas directas en navegador
+function doGet(e) {
+  return despacharPeticion(e);
+}
+
+/**
+ * Enrutador principal de peticiones API
+ */
+function despacharPeticion(e) {
+  try {
+    var params = {};
+
+    // 1. Obtener parámetros (soporta tanto JSON en el body como query parameters / form-data)
+    if (e && e.postData && e.postData.contents) {
+      try {
+        params = JSON.parse(e.postData.contents);
+      } catch (errJson) {
+        params = e.parameter || {};
+      }
+    } else if (e && e.parameter) {
+      params = e.parameter;
+    }
+
+    var action = params.action || "";
+    var respuesta = null;
+
+    // 2. Ejecutar la acción solicitada manteniendo la lógica funcional idéntica
+    if (action === "validarClave") {
+      var clave = params.clave || "";
+      var parada = params.parada || "";
+      var modo = params.modo || "";
+      respuesta = validarClave(clave, parada, modo);
+
+    } else if (action === "guardarResultado") {
+      var usuario = params.usuario || params.clave || "";
+      var aciertos = Number(params.aciertos) || 0;
+      var premio = params.premio || "Sin premio";
+      respuesta = guardarResultado(usuario, aciertos, premio);
+
+    } else {
+      respuesta = { 
+        error: "Acción no reconocida. Especifique 'validarClave' o 'guardarResultado'." 
+      };
+    }
+
+    // 3. Retornar salida JSON con ContentService
+    return ContentService.createTextOutput(JSON.stringify(respuesta))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    // Control de errores de servidor
+    var errorOutput = { 
+      error: "Error interno en Google Apps Script: " + error.toString() 
+    };
+    return ContentService.createTextOutput(JSON.stringify(errorOutput))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+/**
+ * LÓGICA DE VALIDACIÓN (100% IDÉNTICA A TU CÓDIGO ORIGINAL)
+ */
+function validarClave(clave, parada, modo) {
+  var libro = SpreadsheetApp.getActiveSpreadsheet();
+  
+  // 1. Verificación de usuario en pestaña "Usuarios"
+  var users = libro.getSheetByName("Usuarios").getDataRange().getValues();
+  var esValido = users.slice(1).some(function(r) { 
+    return r[0].toString().trim() == clave.toString().trim(); 
+  });
+  
+  if (!esValido) {
+    return { error: "Código incorrecto." };
+  }
+  
+  var videos = libro.getSheetByName("Videos").getDataRange().getValues();
+
+  // 2. Modo Trivia
+  if (modo == "trivia") {
+    // Verificamos si este código ya está en la pestaña Resultados
+    var hojaResultados = libro.getSheetByName("Resultados");
+    var resultados = hojaResultados.getDataRange().getValues();
+
+    var yaJugo = resultados.slice(1).some(function(r) { 
+      return r[1] && r[1].toString().trim() === clave.toString().trim(); 
+    });
+
+    if (yaJugo) {
+      return { error: "Ya completaste la trivia anteriormente. ¡Solo puedes participar una vez!" };
+    }
+
+    // Estructuración de las preguntas
+    var lista = videos.slice(1).map(function(r) {
+      return { 
+        pregunta: r[3], 
+        A: r[4], 
+        B: r[5], 
+        C: r[6], 
+        correct: r[7].toString().toUpperCase() 
+      };
+    });
+    
+    return { tipo: "trivia", data: lista };
+
+  } else {
+    // 3. Modo Video estándar por Parada
+    var fila = videos.slice(1).find(function(r) { 
+      return r[0].toString() == parada.toString(); 
+    });
+    
+    if (!fila) {
+      return { error: "Parada no configurada." };
+    }
+
+    // Mantenemos tu lógica intacta para el iPhone (WebM / MP4)
+    return { 
+      tipo: "video", 
+      url: fila[1], 
+      lugar: fila[2], 
+      urlIphone: fila[8] 
+    };
+  }
+}
+
+/**
+ * LÓGICA DE GUARDADO DE RESULTADOS (100% IDÉNTICA A TU CÓDIGO ORIGINAL)
+ */
+function guardarResultado(usuario, aciertos, premio) {
+  var hoja = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Resultados");
+  hoja.appendRow([new Date(), usuario, aciertos, premio]);
+  return { success: true, message: "Resultado guardado correctamente." };
+}
+`;
